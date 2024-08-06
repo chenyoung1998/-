@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪖不適服賠償金計算機</title>
+    <style>
+        body {
+            background-color: #003300; /* Dark green background */
+            color: black; /* Black text */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        label, button {
+            font-size: 16px;
+        }
+        input, select {
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        function calculateCompensation() {
+            // Constants
+            const A_male = 547354;
+            const A_female = 565904;
+            const totalDays = 2190;
+
+            // Get gender from the input
+            const gender = document.getElementById('gender').value;
+            let A;
+            if (gender === 'male') {
+                A = A_male;
+            } else if (gender === 'female') {
+                A = A_female;
+            } else {
+                document.getElementById('result').innerText = '請選擇性別';
+                return;
+            }
+            
+            // Start date
+            const startDate = new Date(2020, 5, 19); // Months are 0-based in JavaScript
+            
+            // Get end date from the input
+            const endDateStr = document.getElementById('endDate').value;
+            const endDate = new Date(endDateStr);
+            
+            // Calculate total days of service
+            const timeDifference = endDate - startDate;
+            const D = Math.floor(timeDifference / (1000 * 60 * 60 * 24)) + 1; // Including the end date
+            
+            // Calculate compensation
+            const compensation = 2 * A * ((totalDays - D) / totalDays);
+            
+            // Display result
+            document.getElementById('result').innerText = `賠償金: ${compensation.toFixed(2)} 元`;
+        }
+    </script>
+</head>
+<body>
+    <h1>不適服賠償金計算機</h1>
+    <label for="gender">性別:</label>
+    <select id="gender" name="gender">
+        <option value="">請選擇</option>
+        <option value="male">男</option>
+        <option value="female">女</option>
+    </select>
+    <br>
+    <label for="endDate">退伍生效日期 (YYYY-MM-DD):</label>
+    <input type="date" id="endDate" name="endDate">
+    <br>
+    <button onclick="calculateCompensation()">計算</button>
+    <p id="result"></p>
+</body>
+</html>
